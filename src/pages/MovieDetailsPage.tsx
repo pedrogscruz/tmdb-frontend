@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMovieDetails, useMovieVideos } from '../hooks/useMovies';
+import { useMovieFavorite } from '../hooks/useMovieFavorite';
 import { UserMenu } from '../components/UserMenu';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getImageUrl } from '../utils/config';
@@ -19,6 +20,14 @@ export const MovieDetailsPage = () => {
   
   const { data: movie, isLoading: movieLoading, error: movieError, refetch: refetchMovie } = useMovieDetails(movieId);
   const { data: videosData, isLoading: videosLoading, error: videosError } = useMovieVideos(movieId);
+  const { 
+    isFavorite, 
+    isLoadingStates, 
+    isTogglingFavorite, 
+    toggleError, 
+    toggleFavorite, 
+    isAuthenticated 
+  } = useMovieFavorite(movieId);
 
   if (movieLoading) {
     return 'loading...';
@@ -32,6 +41,11 @@ export const MovieDetailsPage = () => {
       />
     );
   }
+
+  const handleToggleFavorite = () => {
+    if (!isAuthenticated) return;
+    toggleFavorite();
+  };
 
   const handlePlayTrailer = (video: Video) => {
     if (video.site === 'YouTube') {
@@ -121,6 +135,24 @@ export const MovieDetailsPage = () => {
                   {movie.vote_average.toFixed(1)}/10
                 </div>
                 <div>
+                  <button 
+                    className={`movie-details__favorite-btn ${!isAuthenticated ? 'movie-details__favorite-btn--disabled' : ''} ${isFavorite ? 'movie-details__favorite-btn--active' : ''}`}
+                    onClick={handleToggleFavorite}
+                    disabled={!isAuthenticated || isTogglingFavorite || isLoadingStates}
+                  >
+                    {isFavorite ? t('movieDetails.removeFromFavorites') : t('movieDetails.addToFavorite')}
+                    {isTogglingFavorite && <div className="movie-details__favorite-btn-loading" />}
+                  </button>
+                  {!isAuthenticated && (
+                    <p className="movie-details__login-hint">
+                      {t('movieDetails.loginRequired')}
+                    </p>
+                  )}
+                  {toggleError && (
+                    <p className="movie-details__error">
+                      {toggleError instanceof Error ? toggleError.message : t('movieDetails.errorAddingFavorite')}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
