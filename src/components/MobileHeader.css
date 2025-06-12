@@ -1,9 +1,12 @@
 .mobile-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: none;
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: #2a2a2a;
+  background: #212121;
   border-bottom: 1px solid #404040;
   position: relative;
 }

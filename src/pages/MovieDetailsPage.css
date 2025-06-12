@@ -6,9 +6,11 @@
 
 .movie-details__header-mobile,
 .movie-details__header-desktop {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   justify-content: space-between;
   align-items: center;
-  background: #1a1a1a;
   border-bottom: 1px solid #333;
 }
 
@@ -18,14 +20,14 @@
   align-items: center;
   height: 66px;
   padding: 0px 20px;
-  background: #2c2c2c;
-  position: relative;
+  background: #212121;
 }
 
 .movie-details__header-desktop {
   display: none;
   padding: 0 24px;
   height: 80px;
+  background: #1a1a1a;
   & > span {
     margin-left: auto;
   }
@@ -34,6 +36,7 @@
 .movie-details__container {
   max-width: 1280px;
   margin: 0 auto;
+  padding-bottom: 25px;
 }
 
 .movie-details__back-btn {
@@ -349,6 +352,10 @@
   
   .movie-details__header-mobile {
     display: none;
+  }
+
+  .movie-details__container {
+    padding-bottom: 60px;
   }
 
   .movie-details__content-container {
