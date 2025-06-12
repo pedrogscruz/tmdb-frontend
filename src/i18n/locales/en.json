@@ -1,5 +1,14 @@
 {
   "common": {
-    "movies": "Movies"
+    "movies": "Movies",
+    "category": "Category"
+  },
+  "home": {
+    "categories": {
+      "popular": "Popular",
+      "nowPlaying": "Now Playing",
+      "topRated": "Top Rated",
+      "upcoming": "Upcoming"
+    }
   }
 } 

@@ -1,25 +1,50 @@
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MovieCard } from '../components/MovieCard';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { CategoryFilter } from '../components/CategoryFilter';
 import { MobileHeader } from '../components/MobileHeader';
-import { usePopularMovies } from '../hooks/useMovies';
+import { DesktopHeader } from '../components/DesktopHeader';
+import { useMoviesByCategory } from '../hooks/useMovies';
+import type { MovieCategory } from '../services/tmdbApi';
 import './HomePage.css';
 
 export const HomePage = () => {
-  const { data, isLoading, error } = usePopularMovies();
+  const { t } = useTranslation();
+  const [selectedCategory, setSelectedCategory] = useState<MovieCategory>('popular');
+  const { data, isLoading, error } = useMoviesByCategory(selectedCategory);
+
+  const handleCategoryChange = (category: MovieCategory) => {
+    setSelectedCategory(category);
+  };
 
   // Show skeleton loading for initial load
   if (isLoading && !data) {
-    return 'loading...';
+    return 'loading...'
   }
 
   if (error) {
-    return 'error';
+    return (
+      <ErrorMessage
+        message={t('home.errorLoadingMovies')}
+        onRetry={() => {}}
+      />
+    );
   }
-
 
   return (
     <div className="home-page">
-      {/* Mobile Header */}
-      <MobileHeader />
+      <MobileHeader 
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+      />
+
+      <DesktopHeader selectedCategory={selectedCategory} />
+
+      <CategoryFilter 
+        selectedCategory={selectedCategory}
+        onCategoryChange={handleCategoryChange}
+      />
 
       <main className="home-page__content">
         <div className="movies-grid">

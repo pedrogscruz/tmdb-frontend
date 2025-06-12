@@ -9,9 +9,13 @@ const api = axios.create({
   },
 });
 
+export type MovieCategory = 'popular' | 'now_playing' | 'top_rated' | 'upcoming';
+
 export const tmdbApi = {
-  getPopularMovies: async (): Promise<PopularMoviesResponse> => {
-    const response = await api.get<PopularMoviesResponse>('/movie/popular');
+  getMoviesByCategory: async (category: MovieCategory, page: number = 1): Promise<PopularMoviesResponse> => {
+    const response = await api.get<PopularMoviesResponse>(`/movie/${category}`, {
+      params: { page },
+    });
     return response.data;
-  },
+  }
 }; 
