@@ -4,7 +4,9 @@
     "category": "Category",
     "login": "Log in",
     "logout": "Log out",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "errorSomethingWentWrong": "Something went wrong",
+    "tryAgain": "Try again"
   },
   "home": {
     "categories": {
@@ -12,7 +14,8 @@
       "nowPlaying": "Now Playing",
       "topRated": "Top Rated",
       "upcoming": "Upcoming"
-    }
+    },
+    "errorLoadingMovies": "Error loading movies"
   },
   "movieDetails": {
     "backButton": "Movie details",
