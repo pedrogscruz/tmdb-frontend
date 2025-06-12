@@ -12,7 +12,7 @@ import './HomePage.css';
 export const HomePage = () => {
   const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<MovieCategory>('popular');
-  const { data, isLoading, error } = useMoviesByCategory(selectedCategory);
+  const { data, refetch, isLoading, error } = useMoviesByCategory(selectedCategory);
 
   const handleCategoryChange = (category: MovieCategory) => {
     setSelectedCategory(category);
@@ -20,14 +20,14 @@ export const HomePage = () => {
 
   // Show skeleton loading for initial load
   if (isLoading && !data) {
-    return 'loading...'
+    return 'loading...';
   }
 
   if (error) {
     return (
       <ErrorMessage
         message={t('home.errorLoadingMovies')}
-        onRetry={() => {}}
+        onRetry={() => refetch()}
       />
     );
   }

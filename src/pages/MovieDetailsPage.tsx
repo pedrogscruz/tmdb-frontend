@@ -1,19 +1,33 @@
 
+import { useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMovieDetails, useMovieVideos } from '../hooks/useMovies';
+import { useMovieFavorite } from '../hooks/useMovieFavorite';
+import { UserMenu } from '../components/UserMenu';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getImageUrl } from '../utils/config';
 import type { Video } from '../types/tmdb';
 import './MovieDetailsPage.css';
+import ThreeDotsDropdown from '../components/ThreeDotsDropdown';
+import { SessionContext } from '../providers/Session';
 
 export const MovieDetailsPage = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
+  const { isLoggedIn, handleLoginClick, handleLogoutClick, username } = useContext(SessionContext);
   const movieId = Number(id);
   
   const { data: movie, isLoading: movieLoading, error: movieError, refetch: refetchMovie } = useMovieDetails(movieId);
   const { data: videosData, isLoading: videosLoading, error: videosError } = useMovieVideos(movieId);
+  const { 
+    isFavorite, 
+    isLoadingStates, 
+    isTogglingFavorite, 
+    toggleError, 
+    toggleFavorite, 
+    isAuthenticated 
+  } = useMovieFavorite(movieId);
 
   if (movieLoading) {
     return 'loading...';
@@ -27,6 +41,11 @@ export const MovieDetailsPage = () => {
       />
     );
   }
+
+  const handleToggleFavorite = () => {
+    if (!isAuthenticated) return;
+    toggleFavorite();
+  };
 
   const handlePlayTrailer = (video: Video) => {
     if (video.site === 'YouTube') {
@@ -45,8 +64,48 @@ export const MovieDetailsPage = () => {
         <Link to="/" className="movie-details__back-btn">
           <span className="arrow-icon">{"← "}</span>{t('movieDetails.backButton')}
         </Link>
+        <ThreeDotsDropdown
+          sections={[
+            isLoggedIn ? {
+              label: (
+                <div className="mobile-header__user-info">
+                  <div className="mobile-header__user-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path 
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" 
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <span className="mobile-header__username">{username}</span>
+                </div>
+              ),
+              items: [
+                {
+                  label: t('common.logout'),
+                  onClick: handleLogoutClick,
+                  className: 'mobile-header__logout-btn'
+                },
+              ],
+              className: 'mobile-header__user-section'
+            } : {
+              items: [
+                {
+                  label: t('common.login'),
+                  onClick: handleLoginClick,
+                  className: 'mobile-header__login-btn'
+                },
+              ],
+              className: 'mobile-header__user-section'
+            }
+          ]}
+        />
       </header>
-      <header className="movie-details__header-desktop" />
+      <header className="movie-details__header-desktop">
+        <span>
+          <UserMenu />
+        </span>
+      </header>
       <div className="movie-details__container">
         <div className="movie-details__title-section">
           <h1 className="movie-details__main-title">{movie.title}</h1>
@@ -76,6 +135,24 @@ export const MovieDetailsPage = () => {
                   {movie.vote_average.toFixed(1)}/10
                 </div>
                 <div>
+                  <button 
+                    className={`movie-details__favorite-btn ${!isAuthenticated ? 'movie-details__favorite-btn--disabled' : ''} ${isFavorite ? 'movie-details__favorite-btn--active' : ''}`}
+                    onClick={handleToggleFavorite}
+                    disabled={!isAuthenticated || isTogglingFavorite || isLoadingStates}
+                  >
+                    {isFavorite ? t('movieDetails.removeFromFavorites') : t('movieDetails.addToFavorite')}
+                    {isTogglingFavorite && <div className="movie-details__favorite-btn-loading" />}
+                  </button>
+                  {!isAuthenticated && (
+                    <p className="movie-details__login-hint">
+                      {t('movieDetails.loginRequired')}
+                    </p>
+                  )}
+                  {toggleError && (
+                    <p className="movie-details__error">
+                      {toggleError instanceof Error ? toggleError.message : t('movieDetails.errorAddingFavorite')}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

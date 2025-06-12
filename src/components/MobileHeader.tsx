@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SessionContext } from '../providers/Session';
 import ThreeDotsDropdown from './ThreeDotsDropdown';
 import type { MovieCategory } from '../services/tmdbApi';
 import './MobileHeader.css';
@@ -15,6 +17,7 @@ interface MobileHeaderProps {
 
 export const MobileHeader = ({ selectedCategory, onCategoryChange }: MobileHeaderProps) => {
   const { t } = useTranslation();
+  const sessionContext = useContext(SessionContext);
 
   const categories: CategoryItem[] = [
     { key: 'popular', label: t('home.categories.popular') },
@@ -29,6 +32,14 @@ export const MobileHeader = ({ selectedCategory, onCategoryChange }: MobileHeade
     onCategoryChange(category);
   };
 
+  const handleLoginClick = () => {
+    sessionContext.handleLoginClick();
+  };
+
+  const handleLogoutClick = () => {
+    sessionContext.handleLogoutClick();
+  };
+
   return (
     <div className="mobile-header" data-testid="mobile-header">
       <h1 className="mobile-header__title">
@@ -38,6 +49,38 @@ export const MobileHeader = ({ selectedCategory, onCategoryChange }: MobileHeade
       <ThreeDotsDropdown
         data-testid="mobile-category-dropdown"
         sections={[
+          sessionContext.isLoggedIn ? {
+            label: (
+              <div className="mobile-header__user-info">
+                <div className="mobile-header__user-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path 
+                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" 
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <span className="mobile-header__username">{sessionContext.username}</span>
+              </div>
+            ),
+            items: [
+              {
+                label: t('common.logout'),
+                onClick: handleLogoutClick,
+                className: 'mobile-header__logout-btn'
+              },
+            ],
+            className: 'mobile-header__user-section'
+          } : {
+            items: [
+              {
+                label: t('common.login'),
+                onClick: handleLoginClick,
+                className: 'mobile-header__login-btn'
+              },
+            ],
+            className: 'mobile-header__user-section'
+          },
           {
             label: t('common.category'),
             items: categories.map((category) => ({
