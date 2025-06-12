@@ -1,7 +1,8 @@
 {
   "common": {
     "movies": "Movies",
-    "category": "Category"
+    "category": "Category",
+    "cancel": "Cancel"
   },
   "home": {
     "categories": {
@@ -15,5 +16,14 @@
     "backButton": "Movie details",
     "trailers": "trailers",
     "mins": "mins"
+  },
+  "auth": {
+    "loginTitle": "Login to TMDb",
+    "loginDescription": "To save your favorite movies, you need to login to your The Movie Database account.",
+    "loginInfo": "You'll be redirected to TMDb to authenticate securely.",
+    "confirmLogin": "Yes, Login",
+    "redirectingDescription": "Redirecting to TMDb...",
+    "redirectingInfo": "Please complete the authentication in the popup window.",
+    "authenticating": "Processing authentication..."
   }
 } 
