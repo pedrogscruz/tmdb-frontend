@@ -22,6 +22,21 @@ export interface PopularMoviesResponse {
   total_results: number;
 }
 
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface MovieDetails extends Movie {
+  runtime: number;
+  genres: Genre[];
+  budget: number;
+  revenue: number;
+  status: string;
+  tagline: string;
+  homepage: string;
+}
+
 export interface TMDbConfig {
   apiKey: string;
   apiToken: string;

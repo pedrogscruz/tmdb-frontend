@@ -8,3 +8,12 @@ export const useMoviesByCategory = (category: MovieCategory, page: number = 1) =
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };
+
+export const useMovieDetails = (id: number) => {
+  return useQuery({
+    queryKey: ['movieDetails', id],
+    queryFn: () => tmdbApi.getMovieDetails(id),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 10, // 10 minutes
+  });
+};
