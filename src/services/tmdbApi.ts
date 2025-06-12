@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { PopularMoviesResponse } from '../types/tmdb';
+import type { PopularMoviesResponse, MovieDetails } from '../types/tmdb';
 import { tmdbConfig } from '../utils/config';
 
 const api = axios.create({
@@ -17,5 +17,9 @@ export const tmdbApi = {
       params: { page },
     });
     return response.data;
-  }
+  },
+  getMovieDetails: async (id: number): Promise<MovieDetails> => {
+    const response = await api.get<MovieDetails>(`/movie/${id}`);
+    return response.data;
+  },
 }; 

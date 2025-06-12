@@ -10,5 +10,9 @@
       "topRated": "Top Rated",
       "upcoming": "Upcoming"
     }
+  },
+  "movieDetails": {
+    "backButton": "Movie details",
+    "trailers": "trailers"
   }
 } 
