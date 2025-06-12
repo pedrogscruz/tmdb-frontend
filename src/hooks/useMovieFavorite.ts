@@ -40,7 +40,9 @@ export const useMovieFavorite = (movieId: number) => {
       });
     },
     onError: (error) => {
-      console.error('Error toggling favorite:', error);
+      if (process.env.NODE_ENV !== 'test') {
+        console.error('Error toggling favorite:', error);
+      }
     },
   });
 
