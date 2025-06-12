@@ -1,4 +1,3 @@
-
 import { useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -64,7 +63,7 @@ export const MovieDetailsPage = () => {
   const imageSize = isMobile ? 'w185' : 'w500';
 
   return (
-    <div className="movie-details">
+    <div className="movie-details" data-testid="movie-details-page">
       <header className="movie-details__header-mobile">
         <Link to="/" className="movie-details__back-btn">
           <span className="arrow-icon">{"← "}</span>{t('movieDetails.backButton')}
@@ -113,7 +112,7 @@ export const MovieDetailsPage = () => {
       </header>
       <div className="movie-details__container">
         <div className="movie-details__title-section">
-          <h1 className="movie-details__main-title">{movie.title}</h1>
+          <h1 className="movie-details__main-title" data-testid="movie-title">{movie.title}</h1>
         </div>
 
         <div className="movie-details__content-container">
@@ -123,20 +122,21 @@ export const MovieDetailsPage = () => {
                 src={getImageUrl(movie.poster_path, imageSize)}
                 alt={movie.title}
                 className="movie-details__poster"
+                data-testid="movie-poster"
               />
             </div>
             
             <div className="movie-details__info-panel">
               <div className="movie-details__meta-info">
-                <div className="movie-details__year">
+                <div className="movie-details__year" data-testid="movie-year">
                   {new Date(movie.release_date).getFullYear()}
                 </div>
-                <div className="movie-details__duration">
+                <div className="movie-details__duration" data-testid="movie-duration">
                   {movie.runtime} {t('movieDetails.mins')}
                 </div>
               </div>
               <div className="movie-details__actions">
-                <div className="movie-details__rating-badge">
+                <div className="movie-details__rating-badge" data-testid="movie-rating">
                   {movie.vote_average.toFixed(1)}/10
                 </div>
                 <div>
@@ -144,17 +144,18 @@ export const MovieDetailsPage = () => {
                     className={`movie-details__favorite-btn ${!isAuthenticated ? 'movie-details__favorite-btn--disabled' : ''} ${isFavorite ? 'movie-details__favorite-btn--active' : ''}`}
                     onClick={handleToggleFavorite}
                     disabled={!isAuthenticated || isTogglingFavorite || isLoadingStates}
+                    data-testid="favorite-button"
                   >
                     {isFavorite ? t('movieDetails.removeFromFavorites') : t('movieDetails.addToFavorite')}
                     {isTogglingFavorite && <div className="movie-details__favorite-btn-loading" />}
                   </button>
                   {!isAuthenticated && (
-                    <p className="movie-details__login-hint">
+                    <p className="movie-details__login-hint" data-testid="login-hint">
                       {t('movieDetails.loginRequired')}
                     </p>
                   )}
                   {toggleError && (
-                    <p className="movie-details__error">
+                    <p className="movie-details__error" data-testid="favorite-error">
                       {toggleError instanceof Error ? toggleError.message : t('movieDetails.errorAddingFavorite')}
                     </p>
                   )}
@@ -164,27 +165,28 @@ export const MovieDetailsPage = () => {
           </div>
 
           <div className="movie-details__overview-section">
-            <p className="movie-details__overview">{movie.overview}</p>
+            <p className="movie-details__overview" data-testid="movie-overview">{movie.overview}</p>
           </div>
 
-          <div className="movie-details__trailers-section">
-            <h2 className="movie-details__trailers-title">{t('movieDetails.trailers')}</h2>
+          <div className="movie-details__trailers-section" data-testid="trailers-section">
+            <h2 className="movie-details__trailers-title" data-testid="trailers-title">{t('movieDetails.trailers')}</h2>
             
             {videosLoading ? (
-              <div className="movie-details__trailers-loading">
+              <div className="movie-details__trailers-loading" data-testid="trailers-loading">
                 {t('movieDetails.loadingTrailers')}
               </div>
             ) : videosError ? (
-              <div className="movie-details__trailers-error">
+              <div className="movie-details__trailers-error" data-testid="trailers-error">
                 {t('movieDetails.errorLoadingTrailers')}
               </div>
             ) : trailers.length > 0 ? (
-              <div className="movie-details__trailer-buttons">
+              <div className="movie-details__trailer-buttons" data-testid="trailer-buttons">
                 {trailers.map((trailer, index) => (
                   <button 
                     key={trailer.id}
                     className="movie-details__trailer-btn"
                     onClick={() => handlePlayTrailer(trailer)}
+                    data-testid={`trailer-button-${index}`}
                   >
                     <span className="movie-details__play-icon">▶</span>
                     {trailer.name || t('movieDetails.playTrailer', { number: index + 1 })}
@@ -192,7 +194,7 @@ export const MovieDetailsPage = () => {
                 ))}
               </div>
             ) : (
-              <div className="movie-details__no-trailers">
+              <div className="movie-details__no-trailers" data-testid="no-trailers">
                 {t('movieDetails.noTrailers')}
               </div>
             )}

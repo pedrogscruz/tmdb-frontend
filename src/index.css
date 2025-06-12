@@ -5,4 +5,11 @@
 
 body {
   margin: 0;
+  background: #212121;
+}
+
+@media (min-width: 768px) {
+  body {
+    background: #1a1a1a;
+  }
 }

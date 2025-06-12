@@ -9,6 +9,22 @@ export const useMoviesByCategory = (category: MovieCategory, page: number = 1) =
   });
 };
 
+export const useInfiniteMoviesByCategory = (category: MovieCategory) => {
+  return useInfiniteQuery({
+    queryKey: ['infiniteMovies', category],
+    queryFn: ({ pageParam = 1 }) => tmdbApi.getMoviesByCategory(category, pageParam),
+    getNextPageParam: (lastPage) => {
+      // Check if there are more pages available
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+      return undefined; // No more pages
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    initialPageParam: 1,
+  });
+};
+
 export const useMovieDetails = (id: number) => {
   return useQuery({
     queryKey: ['movieDetails', id],
@@ -25,20 +41,4 @@ export const useMovieVideos = (id: number) => {
     enabled: !!id,
     staleTime: 1000 * 60 * 15, // 15 minutes
   });
-};
-
-export const useInfiniteMoviesByCategory = (category: MovieCategory) => {
-  return useInfiniteQuery({
-    queryKey: ['infiniteMovies', category],
-    queryFn: ({ pageParam = 1 }) => tmdbApi.getMoviesByCategory(category, pageParam),
-    getNextPageParam: (lastPage) => {
-      // Check if there are more pages available
-      if (lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-      return undefined; // No more pages
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    initialPageParam: 1,
-  });
-};
+}; 
