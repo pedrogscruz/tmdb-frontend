@@ -4,7 +4,9 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useMovieDetails, useMovieVideos } from '../hooks/useMovies';
 import { useMovieFavorite } from '../hooks/useMovieFavorite';
+import useMediaQuery from '../hooks/useMediaQuery';
 import { UserMenu } from '../components/UserMenu';
+import { MovieDetailsSkeleton } from '../components/MovieDetailsSkeleton';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getImageUrl } from '../utils/config';
 import type { Video } from '../types/tmdb';
@@ -16,6 +18,7 @@ export const MovieDetailsPage = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { isLoggedIn, handleLoginClick, handleLogoutClick, username } = useContext(SessionContext);
+  const isMobile = useMediaQuery('(max-width: 480px)');
   const movieId = Number(id);
   
   const { data: movie, isLoading: movieLoading, error: movieError, refetch: refetchMovie } = useMovieDetails(movieId);
@@ -30,7 +33,7 @@ export const MovieDetailsPage = () => {
   } = useMovieFavorite(movieId);
 
   if (movieLoading) {
-    return 'loading...';
+    return <MovieDetailsSkeleton />;
   }
 
   if (movieError || !movie) {
@@ -57,6 +60,8 @@ export const MovieDetailsPage = () => {
   const trailers = videosData?.results.filter(
     video => video.type === 'Trailer' && video.site === 'YouTube'
   ).slice(0, 2) || []; // Limit to first 2 trailers
+
+  const imageSize = isMobile ? 'w185' : 'w500';
 
   return (
     <div className="movie-details">
@@ -115,7 +120,7 @@ export const MovieDetailsPage = () => {
           <div className="movie-details__content">
             <div className="movie-details__poster-container">
               <img
-                src={getImageUrl(movie.poster_path, 'w500')}
+                src={getImageUrl(movie.poster_path, imageSize)}
                 alt={movie.title}
                 className="movie-details__poster"
               />
