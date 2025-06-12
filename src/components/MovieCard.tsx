@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { getImageUrl } from '../utils/config';
+import useMediaQuery from '../hooks/useMediaQuery';
 import type { Movie } from '../types/tmdb';
 import './MovieCard.css';
 
@@ -8,11 +9,15 @@ interface MovieCardProps {
 }
 
 export const MovieCard = ({ movie }: MovieCardProps) => {
+  const isMobile = useMediaQuery('(max-width: 480px)');
+
+  const imageSize = isMobile ? 'w185' : 'w342';
+
   return (
     <Link to={`/movie/${movie.id}`} className="movie-card" data-testid="movie-card">
       <div className="movie-card__image-container">
         <img
-          src={getImageUrl(movie.poster_path, 'w342')}
+          src={getImageUrl(movie.poster_path, imageSize)}
           alt={movie.title}
           className="movie-card__image"
           loading="lazy"
