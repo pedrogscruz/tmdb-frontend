@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MovieCard } from '../components/MovieCard';
+import { MoviesGridSkeleton } from '../components/MoviesGridSkeleton';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { CategoryFilter } from '../components/CategoryFilter';
 import { MobileHeader } from '../components/MobileHeader';
@@ -20,7 +21,20 @@ export const HomePage = () => {
 
   // Show skeleton loading for initial load
   if (isLoading && !data) {
-    return 'loading...';
+    return (
+      <div className="home-page">
+        <MobileHeader 
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange}
+        />
+        <DesktopHeader selectedCategory={selectedCategory} />
+        <CategoryFilter 
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange}
+        />
+        <MoviesGridSkeleton />
+      </div>
+    );
   }
 
   if (error) {
