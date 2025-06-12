@@ -1,9 +1,10 @@
 
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useMovieDetails } from '../hooks/useMovies';
+import { useMovieDetails, useMovieVideos } from '../hooks/useMovies';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getImageUrl } from '../utils/config';
+import type { Video } from '../types/tmdb';
 import './MovieDetailsPage.css';
 
 export const MovieDetailsPage = () => {
@@ -12,6 +13,7 @@ export const MovieDetailsPage = () => {
   const movieId = Number(id);
   
   const { data: movie, isLoading: movieLoading, error: movieError, refetch: refetchMovie } = useMovieDetails(movieId);
+  const { data: videosData, isLoading: videosLoading, error: videosError } = useMovieVideos(movieId);
 
   if (movieLoading) {
     return 'loading...';
@@ -25,6 +27,17 @@ export const MovieDetailsPage = () => {
       />
     );
   }
+
+  const handlePlayTrailer = (video: Video) => {
+    if (video.site === 'YouTube') {
+      window.open(`https://www.youtube.com/watch?v=${video.key}`, '_blank');
+    }
+  };
+
+  // Filter videos to get only trailers from YouTube
+  const trailers = videosData?.results.filter(
+    video => video.type === 'Trailer' && video.site === 'YouTube'
+  ).slice(0, 2) || []; // Limit to first 2 trailers
 
   return (
     <div className="movie-details">
@@ -74,6 +87,33 @@ export const MovieDetailsPage = () => {
 
           <div className="movie-details__trailers-section">
             <h2 className="movie-details__trailers-title">{t('movieDetails.trailers')}</h2>
+            
+            {videosLoading ? (
+              <div className="movie-details__trailers-loading">
+                {t('movieDetails.loadingTrailers')}
+              </div>
+            ) : videosError ? (
+              <div className="movie-details__trailers-error">
+                {t('movieDetails.errorLoadingTrailers')}
+              </div>
+            ) : trailers.length > 0 ? (
+              <div className="movie-details__trailer-buttons">
+                {trailers.map((trailer, index) => (
+                  <button 
+                    key={trailer.id}
+                    className="movie-details__trailer-btn"
+                    onClick={() => handlePlayTrailer(trailer)}
+                  >
+                    <span className="movie-details__play-icon">▶</span>
+                    {trailer.name || t('movieDetails.playTrailer', { number: index + 1 })}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="movie-details__no-trailers">
+                {t('movieDetails.noTrailers')}
+              </div>
+            )}
           </div>
         </div>
       </div>
