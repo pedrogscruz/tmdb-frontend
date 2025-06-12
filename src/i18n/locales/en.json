@@ -1,7 +1,10 @@
 {
   "common": {
     "movies": "Movies",
-    "category": "Category"
+    "category": "Category",
+    "login": "Log in",
+    "logout": "Log out",
+    "cancel": "Cancel"
   },
   "home": {
     "categories": {
@@ -13,7 +16,20 @@
   },
   "movieDetails": {
     "backButton": "Movie details",
+    "addToFavorite": "Add to Favorite",
+    "removeFromFavorites": "Remove from Favorites",
+    "loginRequired": "Login required to add favorites",
     "trailers": "trailers",
-    "mins": "mins"
+    "mins": "mins",
+    "errorAddingFavorite": "Error updating favorites"
+  },
+  "auth": {
+    "loginTitle": "Login to TMDb",
+    "loginDescription": "To save your favorite movies, you need to login to your The Movie Database account.",
+    "loginInfo": "You'll be redirected to TMDb to authenticate securely.",
+    "confirmLogin": "Yes, Login",
+    "redirectingDescription": "Redirecting to TMDb...",
+    "redirectingInfo": "Please complete the authentication in the popup window.",
+    "authenticating": "Processing authentication..."
   }
 } 
