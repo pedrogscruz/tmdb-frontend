@@ -1,54 +1,57 @@
-# React + TypeScript + Vite
+# TMDB Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript application for browsing and managing movie favorites using The Movie Database (TMDB) API.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎬 Movie Browsing
+- **Skeleton Loading**: Smooth loading states with skeleton placeholders for movies and details
+- **Infinite Scroll**: Seamless infinite loading for movie lists with categories (popular, top rated, now playing, upcoming)
 
-## Expanding the ESLint configuration
+### 🔐 Authentication
+- **TMDB Session**: OAuth-based authentication flow with TMDB for user login
+- **Favorite Actions**: Add/remove movies to/from favorites with authenticated API calls
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🧪 Testing
+- **E2E Tests**: Comprehensive test coverage for movie details page
+- **Component Tests**: Unit tests for key components with mocked data
+- **API Testing**: Endpoint verification for movie details, videos, and favorites
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_TMDB_API_KEY=your_api_key_here
+VITE_TMDB_API_TOKEN=your_api_token_here
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Get your API credentials from [TMDB Settings](https://www.themoviedb.org/settings/api).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Development
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Run tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+```
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable UI components with skeleton loaders
+├── hooks/         # Custom hooks for movies and favorites
+├── pages/         # Main pages (Home, MovieDetails)
+├── services/      # API services (TMDB, Auth)
+├── providers/     # Context providers (Session)
+└── __tests__/     # Test files with comprehensive coverage
 ```
