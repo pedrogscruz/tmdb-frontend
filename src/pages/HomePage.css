@@ -1,0 +1,61 @@
+.home-page {
+  min-height: 100vh;
+  background: #0f0f0f;
+}
+
+/* Header styles removed - now using DesktopHeader component */
+
+.home-page__content {
+  padding: 24px 20px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Mobile screens (less than 480px) */
+@media (max-width: 479px) {
+  .home-page__content {
+    padding: 0;
+  }
+  
+  .movies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    max-width: none;
+    margin: 0;
+  }
+}
+
+/* Tablet and larger screens */
+@media (min-width: 768px) {
+  .movies-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .home-page__content {
+    padding: 32px 24px 48px;
+  }
+}
+
+/* Desktop and larger screens */
+@media (min-width: 1024px) {
+  
+  .home-page__content {
+    padding: 40px 32px 56px;
+  }
+}
+
+/* Large desktop screens */
+@media (min-width: 1440px) {
+  .movies-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+} 
