@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useMovieDetails, useMovieVideos } from '../hooks/useMovies';
 import { useMovieFavorite } from '../hooks/useMovieFavorite';
 import { UserMenu } from '../components/UserMenu';
+import { MovieDetailsSkeleton } from '../components/MovieDetailsSkeleton';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getImageUrl } from '../utils/config';
 import type { Video } from '../types/tmdb';
@@ -30,7 +31,7 @@ export const MovieDetailsPage = () => {
   } = useMovieFavorite(movieId);
 
   if (movieLoading) {
-    return 'loading...';
+    return <MovieDetailsSkeleton />;
   }
 
   if (movieError || !movie) {
