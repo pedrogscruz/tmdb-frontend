@@ -189,7 +189,9 @@ export const MovieDetailsPage = () => {
                     data-testid={`trailer-button-${index}`}
                   >
                     <span className="movie-details__play-icon">▶</span>
-                    {trailer.name || t('movieDetails.playTrailer', { number: index + 1 })}
+                    <span className='movie-details__trailer-name' data-testid={`trailer-name-${index}`}>
+                      {trailer.name || t('movieDetails.playTrailer', { number: index + 1 })}
+                    </span>
                   </button>
                 ))}
               </div>
