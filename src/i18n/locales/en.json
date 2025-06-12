@@ -13,6 +13,7 @@
   },
   "movieDetails": {
     "backButton": "Movie details",
-    "trailers": "trailers"
+    "trailers": "trailers",
+    "mins": "mins"
   }
 } 
