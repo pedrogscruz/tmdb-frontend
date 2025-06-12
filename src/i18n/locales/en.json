@@ -2,6 +2,8 @@
   "common": {
     "movies": "Movies",
     "category": "Category",
+    "login": "Log in",
+    "logout": "Log out",
     "cancel": "Cancel"
   },
   "home": {

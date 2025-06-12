@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { UserMenu } from './UserMenu';
 import type { MovieCategory } from '../services/tmdbApi';
 import './DesktopHeader.css';
 
@@ -29,6 +30,10 @@ export const DesktopHeader = ({ selectedCategory }: DesktopHeaderProps) => {
         <h1 className="desktop-header__category">
           {currentCategory?.label || t('common.movies')}
         </h1>
+      </div>
+      
+      <div className="desktop-header__right">
+        <UserMenu />
       </div>
     </header>
   );
