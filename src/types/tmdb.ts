@@ -15,13 +15,6 @@ export interface Movie {
   original_language: string;
 }
 
-export interface PopularMoviesResponse {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
-}
-
 export interface Genre {
   id: number;
   name: string;
@@ -55,9 +48,64 @@ export interface VideosResponse {
   results: Video[];
 }
 
+export interface PopularMoviesResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
+
+// Authentication interfaces
+export interface RequestTokenResponse {
+  success: boolean;
+  expires_at: string;
+  request_token: string;
+}
+
+export interface SessionResponse {
+  success: boolean;
+  session_id: string;
+}
+
+export interface AccountResponse {
+  avatar: {
+    gravatar: {
+      hash: string;
+    };
+    tmdb: {
+      avatar_path: string | null;
+    };
+  };
+  id: number;
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  include_adult: boolean;
+  username: string;
+}
+
+export interface AccountStatesResponse {
+  id: number;
+  favorite: boolean;
+  rated: boolean | { value: number };
+  watchlist: boolean;
+}
+
+export interface FavoriteRequest {
+  media_type: 'movie';
+  media_id: number;
+  favorite: boolean;
+}
+
+export interface FavoriteResponse {
+  success: boolean;
+  status_code: number;
+  status_message: string;
+}
+
 export interface TMDbConfig {
   apiKey: string;
   apiToken: string;
   baseUrl: string;
   imageBaseUrl: string;
-}
+} 
